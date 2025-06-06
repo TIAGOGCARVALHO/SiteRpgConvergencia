@@ -3,70 +3,7 @@
 {% block head %}
   {{ super() }}
   <style>
-    /* Cole o CSS da seção 1 aqui */
 
-    /* Estilos para páginas de formulário */
-    .page-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: calc(100vh - 56px - 4rem); /* Ajuste 56px conforme a altura da sua navbar */
-      padding: 2rem 0;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .form-card {
-      background-color: #ffffff;
-      padding: 2.5rem 3rem;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      animation: fadeInUp 0.8s ease-out forwards;
-    }
-
-    .form-card legend {
-      text-align: center;
-      font-size: 2.2rem;
-      font-weight: 600;
-      margin-bottom: 2rem;
-      color: #343a40;
-    }
-
-    /* Estilo para os grupos de formulário */
-    .form-card .form-group {
-      margin-bottom: 1.5rem; /* Espaçamento entre os campos */
-    }
-
-    /* Se você tiver checkboxes em outros formulários, pode usar este estilo */
-    .form-card .form-check {
-      margin-bottom: 1.5rem;
-    }
-    .form-card .form-check-label {
-        vertical-align: middle;
-    }
-
-    /* Estilização do botão de submit genérico */
-    .form-card .submit-btn {
-      padding: 0.75rem 1.5rem;
-      font-size: 1.1rem;
-      font-weight: 500;
-      transition: transform 0.2s ease-out, background-color 0.2s ease-out, border-color 0.2s ease-out;
-    }
-
-    .form-card .submit-btn:hover {
-      transform: scale(1.03); /* Efeito de zoom suave ao passar o mouse */
-    }
   </style>
 {% endblock %}
 
