@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  {{ super() }}
+  <style>
+    /* Estilos para a página de login */
+    .login-page-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 56px - 4rem); /* Altura total da viewport menos a navbar (aprox 56px) e padding */
+      padding: 2rem 0; /* Adiciona um pouco de padding vertical */
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px); /* Começa um pouco abaixo e transparente */
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0); /* Termina na posição normal e totalmente visível */
+      }
+    }
+
+    .login-form-card {
+      background-color: #ffffff;
+      padding: 2.5rem 3rem; /* Espaçamento interno (vertical, horizontal) */
+      border-radius: 10px; /* Bordas mais arredondadas */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Sombra mais suave e pronunciada */
+      width: 100%; /* Ocupa a largura da coluna pai */
+      animation: fadeInUp 0.8s ease-out forwards; /* Aplica a animação de entrada do card */
+    }
+
+    .login-form-card legend {
+      text-align: center;
+      font-size: 2.2rem; /* Título maior */
+      font-weight: 600; /* Fonte um pouco mais forte */
+      margin-bottom: 2rem; /* Mais espaço abaixo do título */
+      color: #343a40; /* Cor escura para o título */
+    }
+
+    /* Ajuste de margem para os grupos de formulário */
+    .login-form-card .form-group,
+    .login-form-card .form-check {
+      margin-bottom: 1.5rem; /* Espaço entre os campos e o checkbox */
+    }
+
+    /* Garante que o label do checkbox esteja bem alinhado */
+    .login-form-card .form-check-label {
+        vertical-align: middle; /* Alinha o texto do label com o checkbox */
+    }
+
+    /* Estilização do botão de submit (login) */
+    .login-form-card .login-submit-btn {
+      padding: 0.75rem 1.5rem; /* Botão um pouco maior e mais largo */
+      font-size: 1.1rem; /* Texto do botão ligeiramente maior */
+      font-weight: 500;
+      transition: transform 0.2s ease-out, background-color 0.2s ease-out, border-color 0.2s ease-out; /* Transição suave para o hover */
+    }
+
+    .login-form-card .login-submit-btn:hover {
+      transform: scale(1.03); /* Efeito de zoom suave ao passar o mouse */
+      /* A classe btn-danger do Bootstrap já lida com o escurecimento da cor no hover.
+         Se precisar de um controle mais fino, você pode adicionar:
+         background-color: #c82333;
+         border-color: #bd2130;
+      */
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container login-page-container">
+        <div class="row justify-content-center w-100"> <div class="col-md-7 col-lg-5 col-xl-4"> <div class="login-form-card"> <form method="POST" action="">
+                        {{ loginform.csrf_token }}
+                        <legend>Entrar</legend>
+                        <fieldset>
+                            <div class="form-group">
+                                {{ loginform.username.label(class="form-control-label") }}
+                                {% if loginform.username.errors%}
+                                    {{ loginform.username(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                    {% for erro in loginform.username.errors %}
+                                        {{ erro }}
+                                    {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ loginform.username(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ loginform.password.label(class="form-control-label") }}
+                                {% if loginform.password.errors%}
+                                    {{ loginform.password(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                    {% for erro in loginform.password.errors %}
+                                        {{ erro }}
+                                    {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ loginform.password(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-check"> {{ loginform.remember(class="form-check-input") }}
+                                {{ loginform.remember.label(class="form-check-label") }}
+                            </div>
+                        </fieldset>
+                        {{ loginform.submit_login(class="btn btn-danger w-100 mt-3 login-submit-btn") }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

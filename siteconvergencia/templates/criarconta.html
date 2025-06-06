@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  {{ super() }}
+  <style>
+    /* Cole o CSS da seção 1 aqui */
+
+    /* Estilos para páginas de formulário */
+    .page-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 56px - 4rem); /* Ajuste 56px conforme a altura da sua navbar */
+      padding: 2rem 0;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-card {
+      background-color: #ffffff;
+      padding: 2.5rem 3rem;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .form-card legend {
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      color: #343a40;
+    }
+
+    /* Estilo para os grupos de formulário */
+    .form-card .form-group {
+      margin-bottom: 1.5rem; /* Espaçamento entre os campos */
+    }
+
+    /* Se você tiver checkboxes em outros formulários, pode usar este estilo */
+    .form-card .form-check {
+      margin-bottom: 1.5rem;
+    }
+    .form-card .form-check-label {
+        vertical-align: middle;
+    }
+
+    /* Estilização do botão de submit genérico */
+    .form-card .submit-btn {
+      padding: 0.75rem 1.5rem;
+      font-size: 1.1rem;
+      font-weight: 500;
+      transition: transform 0.2s ease-out, background-color 0.2s ease-out, border-color 0.2s ease-out;
+    }
+
+    .form-card .submit-btn:hover {
+      transform: scale(1.03); /* Efeito de zoom suave ao passar o mouse */
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container page-container"> <div class="row justify-content-center w-100">
+            <div class="col-md-7 col-lg-5 col-xl-4"> <div class="form-card"> <form method="POST" action="">
+                        {{ registerform.csrf_token }}
+                        <legend>Criar usuário</legend>
+                        <fieldset>
+                            <div class="form-group">
+                                {{ registerform.username.label(class="form-control-label") }}
+                                {% if registerform.username.errors%}
+                                    {{ registerform.username(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                    {% for erro in registerform.username.errors %}
+                                        {{ erro }}
+                                    {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ registerform.username(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ registerform.password.label(class="form-control-label") }}
+                                {% if registerform.password.errors%}
+                                    {{ registerform.password(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                    {% for erro in registerform.password.errors %}
+                                        {{ erro }}
+                                    {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ registerform.password(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ registerform.confirm_password.label(class="form-control-label") }}
+                                {% if registerform.confirm_password.errors%}
+                                    {{ registerform.confirm_password(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                    {% for erro in registerform.confirm_password.errors %}
+                                        {{ erro }}
+                                    {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ registerform.confirm_password(class="form-control") }}
+                                {% endif %}
+                            </div>
+                        </fieldset>
+                        {{ registerform.submit_register(class="btn btn-danger w-100 mt-3 submit-btn") }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

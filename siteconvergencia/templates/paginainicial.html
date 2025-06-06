@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  {{ super() }} {# Mantém o conteúdo do bloco head do base.html, se houver #}
+  <style>
+    /* Container para centralizar os botões na tela */
+    .center-buttons-container {
+      display: flex; /* Habilita o layout flexbox */
+      justify-content: center; /* Centraliza os botões horizontalmente */
+      align-items: center; /* Centraliza os botões verticalmente */
+      min-height: 75vh; /* Define uma altura mínima para o container, ajudando na centralização vertical. Ajuste conforme necessário.
+                           Pode ser, por exemplo, calc(100vh - altura_da_sua_navbar - outros_espacamentos) */
+      gap: 1.5rem; /* Adiciona um espaço entre os botões */
+    }
+
+    /* Estilo para o efeito hover nos botões */
+    .btn-custom-hover {
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out; /* Suaviza a transição para o estado normal e hover */
+    }
+
+    .btn-custom-hover:hover {
+      transform: translateY(-5px); /* Move o botão um pouco para cima ao passar o cursor */
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra mais pronunciada para dar profundidade */
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <div class="center-buttons-container">
+      <a href="{{ url_for('entrar') }}" class="btn btn-outline-danger btn-lg btn-custom-hover">Entrar</a>
+      <a href="{{ url_for('criar_conta') }}" class="btn btn-outline-danger btn-lg btn-custom-hover">Criar usuário</a>
+    </div>
+  </div>
+{% endblock %}
