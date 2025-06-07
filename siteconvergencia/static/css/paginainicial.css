@@ -1,0 +1,18 @@
+/* Container para centralizar os botões na tela */
+.center-buttons-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 75vh;
+  gap: 1.5rem;
+}
+
+/* Estilo para o efeito hover nos botões */
+.btn-custom-hover {
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.btn-custom-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}

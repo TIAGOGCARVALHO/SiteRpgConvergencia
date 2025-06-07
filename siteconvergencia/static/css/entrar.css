@@ -1,0 +1,46 @@
+/* Estilos para a página de login */
+.login-page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 56px - 4rem);
+  padding: 2rem 0;
+}
+
+.login-form-card {
+  background-color: #ffffff;
+  padding: 2.5rem 3rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.login-form-card legend {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: #343a40;
+}
+
+.login-form-card .form-group,
+.login-form-card .form-check {
+  margin-bottom: 1.5rem;
+}
+
+.login-form-card .form-check-label {
+    vertical-align: middle;
+}
+
+.login-form-card .login-submit-btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: transform 0.2s ease-out, background-color 0.2s ease-out, border-color 0.2s ease-out;
+}
+
+.login-form-card .login-submit-btn:hover {
+  transform: scale(1.03);
+}
