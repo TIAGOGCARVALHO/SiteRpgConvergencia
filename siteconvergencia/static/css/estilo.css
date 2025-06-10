@@ -69,3 +69,27 @@
     transform: translateY(0);
   }
 }
+
+/* Container para posicionar as flash messages */
+.flash-messages-container {
+  width: 90%; /* Define a largura do container das mensagens */
+  max-width: 960px; /* Define uma largura máxima */
+  position: fixed; /* Fixa o container em relação à janela do navegador */
+  top: 60px; /* Distância do topo, para não sobrepor a navbar */
+  left: 50%; /* Centraliza o container */
+  transform: translateX(-50%); /* Ajuste fino para centralização perfeita */
+  z-index: 1050; /* Garante que as mensagens fiquem sobre outros elementos */
+  pointer-events: none; /* Permite clicar através do container quando não há alertas */
+}
+
+/* Ajusta os alertas dentro do novo container */
+.flash-messages-container .alert {
+  pointer-events: auto; /* Restaura os eventos de clique para os alertas */
+  width: 100%;
+}
+
+/* Remove a margem superior do alerta que não é mais necessária */
+.alert.alert-custom-animated {
+  margin-top: 0;
+  margin-bottom: 1rem; /* Adiciona um espaço caso apareça mais de uma mensagem */
+}

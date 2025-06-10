@@ -15,11 +15,11 @@
 
     {% include '_navbar.html' %}
 
-    <div class="container">
+    <div class="flash-messages-container">
       {% with messages = get_flashed_messages(with_categories=True) %}
         {% if messages %}
           {% for categoria, mensagem in messages %}
-            {# As classes aqui já estão corretas para o dismiss do Bootstrap #}
+            {# A estrutura do alerta é mantida, apenas o seu contentor muda #}
             <div class="alert {{ categoria }} alert-dismissible fade show alert-custom-animated" role="alert">
               {{ mensagem }}
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
