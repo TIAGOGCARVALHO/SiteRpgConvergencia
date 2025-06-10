@@ -2,6 +2,7 @@ from siteconvergencia import app, database
 from siteconvergencia.forms import LoginForm, RegisterForm
 from flask import render_template, url_for, request, flash, redirect
 from siteconvergencia.models import Usuarios
+from flask_login import login_user
 @app.route('/')
 def pagina_inicial():
     return render_template('paginainicial.html')
@@ -11,8 +12,12 @@ def pagina_inicial():
 def entrar():
     loginform = LoginForm()
     if loginform.validate_on_submit():
-        flash(f'Usuario {loginform.username.data} iniciado com sucesso!', 'alert-success')
-        return redirect(url_for('area_usuario'))
+        usuario = Usuarios.query.filter_by(username=loginform.username.data).first()
+        if usuario:
+            if loginform.password.data == usuario.password:
+                login_user(usuario, remember=loginform.remember.data)
+                flash(f'Usuario {loginform.username.data} iniciado com sucesso!', 'alert-success')
+                return redirect(url_for('area_usuario'))
     return render_template('entrar.html', loginform=loginform)
 
 
