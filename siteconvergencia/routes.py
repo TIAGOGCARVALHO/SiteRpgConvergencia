@@ -18,6 +18,9 @@ def entrar():
                 login_user(usuario, remember=loginform.remember.data)
                 flash(f'Usuario {loginform.username.data} iniciado com sucesso!', 'alert-success')
                 return redirect(url_for('area_usuario'))
+            else:
+                flash('Usuario ou senha incorreto.', 'alert-danger')
+
     return render_template('entrar.html', loginform=loginform)
 
 
