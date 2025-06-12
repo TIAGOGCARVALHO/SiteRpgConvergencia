@@ -1,10 +1,19 @@
 <nav class="navbar navbar-expand-lg navbar-dark navbar-custom-red-bg"> <div class="container-fluid">
-    <a class="navbar-brand navbar-brand-absolute-center navbar-brand-custom-hover" href="{{ url_for('pagina_inicial') }}">Convergência</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span> </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-      </ul>
+    {% if current_user.is_authenticated %}
+        <a class="navbar-brand navbar-brand-absolute-center navbar-brand-custom-hover" href="{{ url_for('sair') }}">sair</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span> </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+        </ul>
+    {% else %}
+        <a class="navbar-brand navbar-brand-absolute-center navbar-brand-custom-hover" href="{{ url_for('pagina_inicial') }}">Convergência</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span> </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+        </ul>
+    {% endif %}
     </div>
   </div>
 </nav>

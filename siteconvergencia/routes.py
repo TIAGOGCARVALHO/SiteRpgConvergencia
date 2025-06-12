@@ -2,7 +2,8 @@ from siteconvergencia import app, database
 from siteconvergencia.forms import LoginForm, RegisterForm
 from flask import render_template, url_for, request, flash, redirect
 from siteconvergencia.models import Usuarios
-from flask_login import login_user
+from flask_login import login_user, logout_user, current_user
+
 @app.route('/')
 def pagina_inicial():
     return render_template('paginainicial.html')
@@ -40,3 +41,8 @@ def criar_conta():
 @app.route('/AreaUsuario')
 def area_usuario():
     return render_template('areausuario.html')
+
+@app.route('/sair')
+def sair():
+    logout_user()
+    return redirect(url_for('pagina_inicial'))
