@@ -14,6 +14,25 @@
   color: #FFFFFF;
 }
 
+/* NOVAS REGRAS ADICIONADAS */
+/* Deixa o texto "Olá, usuario" branco */
+.navbar-dark .navbar-text {
+  color: white;
+}
+
+/* Deixa o link "Sair" branco */
+.navbar-dark .nav-link {
+  color: white;
+}
+
+/* Opcional: Mantém o link branco ao passar o mouse, mas com um leve brilho para feedback */
+.navbar-dark .nav-link:hover,
+.navbar-dark .nav-link:focus {
+  color: rgba(255, 255, 255, 0.85);
+}
+/* FIM DAS NOVAS REGRAS */
+
+
 .navbar-brand-absolute-center {
   position: absolute;
   left: 50%;
