@@ -1,7 +1,51 @@
 {% extends 'base.html' %}
 
-{% block body %}
+{% block head %}
+    {# Link para o nosso novo arquivo CSS #}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/areausuario.css') }}">
 {% endblock %}
 
-<!-- adicionar na navbar dessa pagina o nome do usuario logado e o botao de logout -->
-<!-- adicionar o "carrossel" de fichas -->
+
+{% block body %}
+<div class="container container-fichas">
+    <h2 class="titulo-secao">Suas Fichas</h2>
+
+    {# Verifica se a lista 'fichas' que veio da rota tem algum item #}
+    {% if fichas %}
+        {# Se tiver, mostra o carrossel #}
+        <div id="carrosselFichas" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {# Loop para criar um item no carrossel para cada ficha #}
+                {% for ficha in fichas %}
+                    {# A classe 'active' é necessária apenas para o primeiro item #}
+                    <div class="carousel-item {% if loop.first %}active{% endif %}">
+                        <div class="carousel-card">
+                            <img src="{{ url_for('static', filename='fotos_personagens/' + ficha.foto_personagem) }}" class="carousel-card-img" alt="Foto de {{ ficha.nome_personagem }}">
+                            <div class="carousel-card-body">
+                                <h5 class="carousel-card-title">{{ ficha.nome_personagem }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {# Controles de Anterior/Próximo do carrossel #}
+            <button class="carousel-control-prev" type="button" data-bs-target="#carrosselFichas" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carrosselFichas" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Próximo</span>
+            </button>
+        </div>
+
+    {% else %}
+        {# Se a lista de fichas estiver vazia, mostra o botão de adicionar #}
+        <div class="container-add-ficha">
+            <p class="lead text-muted">Você ainda não criou nenhuma ficha.</p>
+            <a href="{{ url_for('criar_ficha') }}" class="btn btn-outline-danger btn-add-ficha">+</a>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

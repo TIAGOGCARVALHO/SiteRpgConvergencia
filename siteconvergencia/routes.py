@@ -1,8 +1,10 @@
 from siteconvergencia import app, database
-from siteconvergencia.forms import LoginForm, RegisterForm
+from siteconvergencia.forms import LoginForm, RegisterForm, CriarFichaForm
 from flask import render_template, url_for, request, flash, redirect
-from siteconvergencia.models import Usuarios
+from siteconvergencia.models import Usuarios, Ficha
 from flask_login import login_user, logout_user, current_user, login_required
+import secrets
+import os
 
 @app.route('/')
 def pagina_inicial():
@@ -42,10 +44,50 @@ def criar_conta():
         return redirect(url_for('entrar'))
     return render_template('criarconta.html', registerform=registerform)
 
+
+def salvar_imagem(imagem):
+    # Gera um nome de arquivo aleatório e seguro
+    codigo = secrets.token_hex(8)
+    # Pega a extensão do arquivo original
+    _, extensao = os.path.splitext(imagem.filename)
+    # Combina o código aleatório com a extensão para criar o nome final
+    nome_arquivo = codigo + extensao
+    # Define o caminho completo onde a imagem será salva
+    caminho_completo = os.path.join(app.root_path, 'static/fotos_personagens', nome_arquivo)
+    # Salva o arquivo no caminho definido
+    imagem.save(caminho_completo)
+    return nome_arquivo
+
+
 @app.route('/AreaUsuario')
 @login_required
 def area_usuario():
-    return render_template('areausuario.html')
+    fichas_usuario = Ficha.query.filter_by(id_usuario=current_user.id).all()
+    return render_template('areausuario.html', fichas=fichas_usuario)
+
+
+# ROTA MODIFICADA
+@app.route('/criar_ficha', methods=['GET', 'POST'])
+@login_required
+def criar_ficha():
+    form = CriarFichaForm()
+    if form.validate_on_submit():
+        # Lógica para salvar a foto
+        if form.foto_personagem.data:
+            nome_imagem = salvar_imagem(form.foto_personagem.data)
+        else:
+            nome_imagem = 'default_char.jpg' # Usa a imagem padrão se nenhuma for enviada
+
+        # Cria a nova ficha com os dados do formulário
+        nova_ficha = Ficha(nome_personagem=form.nome_personagem.data,
+                             foto_personagem=nome_imagem,
+                             dono=current_user)
+        # Adiciona ao banco de dados
+        database.session.add(nova_ficha)
+        database.session.commit()
+        flash(f'Ficha para "{form.nome_personagem.data}" criada com sucesso!', 'alert-success')
+        return redirect(url_for('area_usuario'))
+    return render_template('criar_ficha.html', form=form)
 
 @app.route('/sair')
 @login_required

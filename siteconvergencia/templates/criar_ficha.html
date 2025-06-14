@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    {# Vamos reutilizar o mesmo estilo da página de criar conta #}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/criarconta.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="container page-container">
+    <div class="row justify-content-center w-100">
+        <div class="col-md-7 col-lg-5 col-xl-4">
+            <div class="form-card">
+                {# IMPORTANTE: enctype é necessário para upload de arquivos #}
+                <form method="POST" action="" enctype="multipart/form-data">
+                    {{ form.csrf_token }}
+                    <legend>Criar Nova Ficha</legend>
+                    <fieldset>
+                        <div class="form-group">
+                            {{ form.nome_personagem.label(class="form-control-label") }}
+                            {% if form.nome_personagem.errors %}
+                                {{ form.nome_personagem(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in form.nome_personagem.errors %}
+                                        <span>{{ erro }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.nome_personagem(class="form-control") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form.foto_personagem.label(class="form-control-label") }}
+                            {{ form.foto_personagem(class="form-control") }}
+                            {% if form.foto_personagem.errors %}
+                                <div class="text-danger mt-1">
+                                    <small>
+                                    {% for erro in form.foto_personagem.errors %}
+                                        <span>{{ erro }}</span>
+                                    {% endfor %}
+                                    </small>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </fieldset>
+                    {{ form.submit_criar_ficha(class="btn btn-danger w-100 mt-3 submit-btn") }}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

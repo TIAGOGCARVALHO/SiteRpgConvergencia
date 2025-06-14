@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from siteconvergencia.models import Usuarios
@@ -8,6 +9,7 @@ class LoginForm(FlaskForm):
     password = PasswordField('Insira a sua senha', validators=[DataRequired()])
     remember = BooleanField('Lembrar dados de usuário')
     submit_login = SubmitField('Confirmar')
+
 
 class RegisterForm(FlaskForm):
     username = StringField('Crie o seu usuário', validators=[DataRequired()])
@@ -19,3 +21,9 @@ class RegisterForm(FlaskForm):
         usuario = Usuarios.query.filter_by(username=username.data).first()
         if usuario:
             raise ValidationError('Este usuário já existe, insira outro nome ou faça login')
+
+
+class CriarFichaForm(FlaskForm):
+    nome_personagem = StringField('Nome do Personagem', validators=[DataRequired(), Length(min=2, max=50)])
+    foto_personagem = FileField('Escolha uma Foto (Opcional)', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
+    submit_criar_ficha = SubmitField('Criar Personagem')
