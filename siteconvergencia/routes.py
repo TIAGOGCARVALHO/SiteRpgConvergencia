@@ -1,6 +1,6 @@
 from siteconvergencia import app, database
-from siteconvergencia.forms import LoginForm, RegisterForm, CriarFichaForm
-from flask import render_template, url_for, request, flash, redirect
+from siteconvergencia.forms import LoginForm, RegisterForm, CriarFichaForm, ExcluirFichaForm
+from flask import render_template, url_for, request, flash, redirect, abort
 from siteconvergencia.models import Usuarios, Ficha
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
@@ -89,8 +89,68 @@ def criar_ficha():
         return redirect(url_for('area_usuario'))
     return render_template('criar_ficha.html', form=form)
 
+
 @app.route('/sair')
 @login_required
 def sair():
     logout_user()
     return redirect(url_for('pagina_inicial'))
+
+
+@app.route('/ficha/<int:ficha_id>')
+@login_required
+def ver_ficha(ficha_id):
+    # Procura a ficha pelo ID
+    ficha = Ficha.query.get_or_404(ficha_id)
+    # Garante que o usuário só possa ver as próprias fichas
+    if ficha.dono != current_user:
+        abort(403) # Código de erro para "Proibido"
+
+    # Cria o formulário de exclusão para ser usado no modal
+    form_excluir = ExcluirFichaForm()
+
+    return render_template('ver_ficha.html', ficha=ficha, form_excluir=form_excluir)
+
+
+@app.route('/ficha/<int:ficha_id>/excluir', methods=['POST'])
+@login_required
+def excluir_ficha(ficha_id):
+    # Busca a ficha ou retorna erro 404
+    ficha_para_excluir = Ficha.query.get_or_404(ficha_id)
+
+    # Verifica se o usuário é o dono da ficha
+    if ficha_para_excluir.dono != current_user:
+        abort(403)  # Proibido
+
+    form_excluir = ExcluirFichaForm()
+
+    # Validação da senha
+    if form_excluir.validate_on_submit():
+        if current_user.password == form_excluir.password.data:
+            # Senha correta, proceder com a exclusão
+            try:
+                # 1. Deletar a imagem do personagem do servidor
+                caminho_imagem = os.path.join(app.root_path, 'static/fotos_personagens',
+                                              ficha_para_excluir.foto_personagem)
+                if os.path.exists(caminho_imagem) and ficha_para_excluir.foto_personagem != 'default_char.jpg':
+                    os.remove(caminho_imagem)
+
+                # 2. Deletar a ficha do banco de dados
+                database.session.delete(ficha_para_excluir)
+                database.session.commit()
+
+                flash('Ficha excluída com sucesso!', 'alert-success')
+                return redirect(url_for('area_usuario'))
+            except Exception as e:
+                # Em caso de erro, desfaz a transação e informa o usuário
+                database.session.rollback()
+                flash(f'Ocorreu um erro ao excluir a ficha: {e}', 'alert-danger')
+        else:
+            # Senha incorreta
+            flash('Senha incorreta. A exclusão foi cancelada.', 'alert-danger')
+    else:
+        # Se o formulário não for válido por algum motivo (ex: campo vazio)
+        flash('Ocorreu um erro na validação do formulário. Tente novamente.', 'alert-danger')
+
+    # Se a exclusão falhar, redireciona de volta para a página da ficha
+    return redirect(url_for('ver_ficha', ficha_id=ficha_id))

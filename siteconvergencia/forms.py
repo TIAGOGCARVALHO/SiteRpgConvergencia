@@ -27,3 +27,8 @@ class CriarFichaForm(FlaskForm):
     nome_personagem = StringField('Nome do Personagem', validators=[DataRequired(), Length(min=2, max=50)])
     foto_personagem = FileField('Escolha uma Foto (Opcional)', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
     submit_criar_ficha = SubmitField('Criar Personagem')
+
+
+class ExcluirFichaForm(FlaskForm):
+    password = PasswordField('Digite sua senha para confirmar', validators=[DataRequired()])
+    submit_excluir = SubmitField('Confirmar Exclusão')
