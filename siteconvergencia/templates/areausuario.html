@@ -9,12 +9,12 @@
     <h2 class="titulo-secao">Suas Fichas</h2>
 
     {% if fichas %}
-        {# O carrossel... #}
-        <div id="carrosselFichas" class="carousel slide" data-bs-ride="carousel">
+        {# O carrossel MODIFICADO #}
+        <div id="carrosselFichas" class="carousel slide carousel-cards">
             <div class="carousel-inner">
                 {% for ficha in fichas %}
                     <div class="carousel-item {% if loop.first %}active{% endif %}">
-                        <a href="{{ url_for('ver_ficha', ficha_id=ficha.id) }}" style="text-decoration: none; color: inherit;">
+                        <a href="{{ url_for('ver_ficha', ficha_id=ficha.id) }}">
                             <div class="carousel-card">
                                 <img src="{{ url_for('static', filename='fotos_personagens/' + ficha.foto_personagem) }}" class="carousel-card-img" alt="Foto de {{ ficha.nome_personagem }}">
                                 <div class="carousel-card-body">
@@ -48,4 +48,55 @@
     </div>
 
 </div>
+
+{# --- INÍCIO DO NOVO SCRIPT --- #}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const carouselElement = document.getElementById('carrosselFichas');
+    if (!carouselElement) return;
+
+    const carouselInner = carouselElement.querySelector('.carousel-inner');
+
+    // Inicializa o carrossel do Bootstrap sem auto-play
+    const carousel = new bootstrap.Carousel(carouselElement, {
+        interval: false,
+        wrap: true
+    });
+
+    // Função para calcular e aplicar o deslocamento para centralizar o item ativo
+    function centerActiveSlide() {
+        const activeItem = carouselElement.querySelector('.carousel-item.active');
+        if (!activeItem) return;
+
+        const carouselRect = carouselInner.getBoundingClientRect();
+        const itemRect = activeItem.getBoundingClientRect();
+        const itemCenter = itemRect.width / 2;
+
+        // Posição do item ativo em relação ao container flex
+        const desiredPosition = activeItem.offsetLeft + itemCenter;
+
+        // Deslocamento necessário para centralizar o item
+        const translateX = (carouselRect.width / 2) - desiredPosition;
+
+        // Aplica a transformação com uma transição suave
+        carouselInner.style.transform = `translateX(${translateX}px)`;
+    }
+
+    // Centraliza o slide inicial assim que a página carrega
+    centerActiveSlide();
+
+    // Re-centraliza o slide toda vez que o carrossel termina de transicionar
+    carouselElement.addEventListener('slid.bs.carousel', function () {
+        centerActiveSlide();
+    });
+
+    // Opcional: Re-centraliza se o tamanho da janela for alterado
+    window.addEventListener('resize', function() {
+        // Adiciona um pequeno delay para garantir que o layout se estabilizou
+        setTimeout(centerActiveSlide, 200);
+    });
+});
+</script>
+{# --- FIM DO NOVO SCRIPT --- #}
+
 {% endblock %}
