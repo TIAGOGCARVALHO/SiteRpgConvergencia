@@ -19,7 +19,7 @@
 .carousel-cards .carousel-item {
     display: block;
     margin: 0 10px;
-    flex: 0 0 280px; /* Tamanho fixo para os cards */
+    flex: 0 0 220px; /* Reduzindo o tamanho dos cards*/
     transition: transform 0.5s ease, opacity 0.5s ease;
 
     /* Estilo padrão (inativo): menor e com menos opacidade */
@@ -61,4 +61,110 @@
 .carousel-card a {
     text-decoration: none;
     color: inherit;
+}
+
+/* NOVO ESTILO PARA O CARD DA FICHA */
+.carousel-card {
+    background-color: #ffffff; /* Fundo branco para o card */
+    border-radius: 10px; /* Bordas arredondadas */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    overflow: hidden; /* Garante que a imagem respeite o border-radius */
+    text-align: center; /* Centraliza o texto dentro do card */
+    display: flex; /* Para flexbox interno se necessário, embora column seja padrão */
+    flex-direction: column; /* Organiza conteúdo em coluna */
+    height: 100%; /* Garante que o card ocupe todo o espaço disponível no item do carrossel */
+    transition: transform 0.2s ease-in-out; /* Transição para o hover */
+}
+
+.carousel-card:hover {
+    transform: translateY(-5px); /* Efeito de "levantar" ao passar o mouse */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Sombra mais intensa no hover */
+}
+
+/* Novo estilo para a imagem dentro do card */
+.carousel-card-img {
+    width: 100%;
+    height: 200px; /* Altura fixa para as imagens dos cards*/
+    object-fit: cover; /* Garante que a imagem cubra o espaço sem distorcer*/
+    border-radius: 8px 8px 0 0; /* Arredonda as bordas superiores da imagem */
+}
+
+/* Estilo para o corpo do card */
+.carousel-card-body {
+    padding: 1rem; /* Espaçamento interno*/
+    flex-grow: 1; /* Permite que o corpo cresça para preencher o espaço */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estilo para o título do personagem no card */
+.carousel-card-title {
+    font-size: 1.2rem; /* Tamanho da fonte do título*/
+    font-weight: 600; /* Peso da fonte*/
+    margin-bottom: 0; /* Remove margem inferior padrão*/
+    color: #333; /* Cor do texto*/
+    white-space: nowrap; /* Evita quebra de linha*/
+    overflow: hidden; /* Oculta texto que transborda*/
+    text-overflow: ellipsis; /* Adiciona reticências se o texto for muito longo*/
+}
+
+/* Centraliza o título "Suas Fichas"*/
+.titulo-secao {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    color: #343a40;
+    font-weight: bold;
+}
+
+/* Ajustes para o container de adição de ficha (quando não há fichas)*/
+.container-add-ficha {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 0;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    margin-top: 2rem;
+    background-color: #f9f9f9;
+}
+
+.btn-add-ficha {
+    font-size: 3rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.5rem;
+    transition: transform 0.2s ease;
+}
+
+.btn-add-ficha:hover {
+    transform: scale(1.1);
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    .carousel-cards .carousel-item {
+        flex: 0 0 80%; /* Cards maiores em telas pequenas*/
+    }
+
+    .carousel-card-img {
+        height: 180px;
+    }
+}
+
+@media (max-width: 576px) {
+    .carousel-cards .carousel-item {
+        flex: 0 0 90%; /* Ainda maiores em telas muito pequenas*/
+        margin: 0 5px;
+    }
+    .titulo-secao {
+        font-size: 2rem;
+    }
 }

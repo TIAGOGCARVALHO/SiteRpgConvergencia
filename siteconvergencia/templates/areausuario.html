@@ -10,11 +10,12 @@
 
     {% if fichas %}
         {# O carrossel MODIFICADO #}
-        <div id="carrosselFichas" class="carousel slide carousel-cards">
+        <div id="carrosselFichas" class="carousel slide carousel-cards" data-bs-interval="false">
             <div class="carousel-inner">
                 {% for ficha in fichas %}
                     <div class="carousel-item {% if loop.first %}active{% endif %}">
-                        <a href="{{ url_for('ver_ficha', ficha_id=ficha.id) }}">
+                        {# NOVA DIV ADICIONADA COM A CLASSE carousel-card #}
+                        <a href="{{ url_for('ver_ficha', ficha_id=ficha.id) }}" class="text-decoration-none"> {# Remove sublinhado do link #}
                             <div class="carousel-card">
                                 <img src="{{ url_for('static', filename='fotos_personagens/' + ficha.foto_personagem) }}" class="carousel-card-img" alt="Foto de {{ ficha.nome_personagem }}">
                                 <div class="carousel-card-body">
@@ -49,54 +50,63 @@
 
 </div>
 
-{# --- INÍCIO DO NOVO SCRIPT --- #}
+{# --- SCRIPT OTIMIZADO (SEM ALTERAÇÕES SIGNIFICATIVAS NESTA ETAPA) --- #}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const carouselElement = document.getElementById('carrosselFichas');
     if (!carouselElement) return;
 
     const carouselInner = carouselElement.querySelector('.carousel-inner');
+    const carouselItems = carouselElement.querySelectorAll('.carousel-item');
+    let currentActiveIndex = 0; // Controla qual item está "ativo" (centralizado)
 
-    // Inicializa o carrossel do Bootstrap sem auto-play
     const carousel = new bootstrap.Carousel(carouselElement, {
         interval: false,
         wrap: true
     });
 
-    // Função para calcular e aplicar o deslocamento para centralizar o item ativo
     function centerActiveSlide() {
-        const activeItem = carouselElement.querySelector('.carousel-item.active');
-        if (!activeItem) return;
+        if (carouselItems.length === 0) return;
 
+        carouselItems.forEach((item, index) => {
+            item.classList.remove('active');
+            if (index === currentActiveIndex) {
+                item.classList.add('active');
+            }
+        });
+
+        const activeItem = carouselItems[currentActiveIndex];
         const carouselRect = carouselInner.getBoundingClientRect();
         const itemRect = activeItem.getBoundingClientRect();
-        const itemCenter = itemRect.width / 2;
 
-        // Posição do item ativo em relação ao container flex
-        const desiredPosition = activeItem.offsetLeft + itemCenter;
+        const itemLeftRelativeToInner = activeItem.offsetLeft;
+        const itemWidth = itemRect.width;
 
-        // Deslocamento necessário para centralizar o item
-        const translateX = (carouselRect.width / 2) - desiredPosition;
+        const translateX = (carouselRect.width / 2) - (itemLeftRelativeToInner + itemWidth / 2);
 
-        // Aplica a transformação com uma transição suave
         carouselInner.style.transform = `translateX(${translateX}px)`;
     }
 
-    // Centraliza o slide inicial assim que a página carrega
+    function nextSlide() {
+        currentActiveIndex = (currentActiveIndex + 1) % carouselItems.length;
+        centerActiveSlide();
+    }
+
+    function prevSlide() {
+        currentActiveIndex = (currentActiveIndex - 1 + carouselItems.length) % carouselItems.length;
+        centerActiveSlide();
+    }
+
+    carouselElement.querySelector('.carousel-control-next').addEventListener('click', nextSlide);
+    carouselElement.querySelector('.carousel-control-prev').addEventListener('click', prevSlide);
+
     centerActiveSlide();
 
-    // Re-centraliza o slide toda vez que o carrossel termina de transicionar
-    carouselElement.addEventListener('slid.bs.carousel', function () {
-        centerActiveSlide();
-    });
-
-    // Opcional: Re-centraliza se o tamanho da janela for alterado
     window.addEventListener('resize', function() {
-        // Adiciona um pequeno delay para garantir que o layout se estabilizou
         setTimeout(centerActiveSlide, 200);
     });
 });
 </script>
-{# --- FIM DO NOVO SCRIPT --- #}
+{# --- FIM DO SCRIPT OTIMIZADO --- #}
 
 {% endblock %}
