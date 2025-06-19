@@ -2,83 +2,61 @@
 
 /* O contêiner principal do carrossel */
 .carousel-cards {
-    padding: 2rem 0;
-    overflow: hidden;
+    padding: 5rem 2rem; /* Mantenha um padding generoso aqui para dar espaço à sombra */
+    /* *** CRÍTICO: Garanta que não há 'overflow: hidden' aqui ou em qualquer pai imediato. *** */
+    /* Se houver, mude para 'overflow: visible;' */
 }
 
 /*
- * O container interno. A transição aqui é essencial
- * para que o deslize de centralização seja suave.
+ * O container interno.
 */
 .carousel-cards .carousel-inner {
     display: flex;
     transition: transform 0.6s ease-in-out;
+    /* *** CRÍTICO: Garanta que não há 'overflow: hidden' aqui. *** */
+    /* Se houver, mude para 'overflow: visible;' */
 }
 
 /* Estilo para todos os itens do carrossel */
 .carousel-cards .carousel-item {
     display: block;
-    margin: 0 10px;
-    flex: 0 0 220px; /* Reduzindo o tamanho dos cards*/
-    transition: transform 0.5s ease, opacity 0.5s ease;
+    margin: 0 20px; /* Mantemos uma boa margem para espaçamento lateral */
+    flex: 0 0 220px;
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Transição mais curta para o scale */
+    position: relative;
+    z-index: 1;
 
     /* Estilo padrão (inativo): menor e com menos opacidade */
-    transform: scale(0.85);
-    opacity: 0.5;
+    transform: scale(0.9); /* Reduz um pouco o tamanho padrão para dar mais destaque ao hover */
+    opacity: 0.7; /* Sutilmente menos opaco no estado inativo */
 }
 
 /* Estilo para o item ativo (central): tamanho normal e opaco */
 .carousel-cards .carousel-item.active {
-    transform: scale(1);
+    transform: scale(1); /* Volta ao tamanho normal */
     opacity: 1;
-}
-
-/*
- * --- CORREÇÃO PRINCIPAL ---
- * Desativa a animação de translação padrão do Bootstrap nos itens individuais.
- * Isso evita o conflito de "dupla animação". Agora, apenas o nosso
- * JavaScript irá animar o container .carousel-inner.
-*/
-.carousel-cards .carousel-item-start,
-.carousel-cards .carousel-item-end {
-    transform: none;
-}
-
-/* Estilos para os botões de controle */
-.carousel-cards .carousel-control-prev,
-.carousel-cards .carousel-control-next {
-    width: 5%;
-}
-
-.carousel-cards .carousel-control-prev-icon,
-.carousel-cards .carousel-control-next-icon {
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 50%;
-    padding: 1.5rem;
-}
-
-/* Remove a linha extra que pode aparecer abaixo do carrossel */
-.carousel-card a {
-    text-decoration: none;
-    color: inherit;
+    z-index: 2;
 }
 
 /* NOVO ESTILO PARA O CARD DA FICHA */
 .carousel-card {
-    background-color: #ffffff; /* Fundo branco para o card */
-    border-radius: 10px; /* Bordas arredondadas */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    overflow: hidden; /* Garante que a imagem respeite o border-radius */
-    text-align: center; /* Centraliza o texto dentro do card */
-    display: flex; /* Para flexbox interno se necessário, embora column seja padrão */
-    flex-direction: column; /* Organiza conteúdo em coluna */
-    height: 100%; /* Garante que o card ocupe todo o espaço disponível no item do carrossel */
-    transition: transform 0.2s ease-in-out; /* Transição para o hover */
+    background-color: #ffffff;
+    border-radius: 10px;
+    /* Sombra padrão mais suave, para não competir com a sombra do hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: visible; /* ESSENCIAL para que a sombra não seja cortada */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* A transição agora é para 'transform' e 'box-shadow' */
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
 }
 
 .carousel-card:hover {
-    transform: translateY(-5px); /* Efeito de "levantar" ao passar o mouse */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Sombra mais intensa no hover */
+    transform: scale(1.05); /* O card aumenta em 5% no hover */
+    /* Uma sombra mais simples e simétrica para o efeito de escala */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25); /* Sombra mais difusa e perceptível */
 }
 
 /* Novo estilo para a imagem dentro do card */
